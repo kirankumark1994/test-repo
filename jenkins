@@ -1,0 +1,31 @@
+pipeline {
+    agent any
+
+    stages {
+        stage("git checkout"){
+            steps {
+                checkout([$class: 'GitSCM', branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/kirankumark1994/test-repo.git']]])
+            }
+        }
+        stage("dependency check"){
+            steps {
+                dependencyCheck additionalArguments: ''
+            }
+        }
+        stage('Build') {
+            steps {
+                build quietPeriod: 1, job: ''
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing..'
+            }
+        }
+        stage('Deploy') {
+            steps {
+                echo 'Deploying....'
+            }
+        }
+    }
+}
